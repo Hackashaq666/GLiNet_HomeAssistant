@@ -45,8 +45,8 @@ async def async_setup_entry(
     entities.append(GLiNetWireGuardServerSwitch(coordinator, entry))
     entities.append(GLiNetOpenVPNServerSwitch(coordinator, entry))
     
-    # WiFi switches
-    wifi_config = coordinator.data.get("wifi_config", {})
+    # WiFi switches (wifi_config is None on wired-only devices like MT2500)
+    wifi_config = coordinator.data.get("wifi_config") or {}
     for device_config in wifi_config.get("res", []):
         for iface in device_config.get("ifaces", []):
             entities.append(GLiNetWiFiSwitch(coordinator, iface, device_config, entry))
@@ -293,7 +293,7 @@ class GLiNetWiFiSwitch(CoordinatorEntity, SwitchEntity):
     def is_on(self) -> bool:
         """Return true if the WiFi is enabled."""
         # Get the current state from coordinator data
-        wifi_config = self.coordinator.data.get("wifi_config", {})
+        wifi_config = self.coordinator.data.get("wifi_config") or {}
         for device in wifi_config.get("res", []):
             for iface in device.get("ifaces", []):
                 if iface.get("name") == self.iface_name:
@@ -309,7 +309,7 @@ class GLiNetWiFiSwitch(CoordinatorEntity, SwitchEntity):
     def extra_state_attributes(self) -> dict[str, Any]:
         """Return the state attributes."""
         # Get current WiFi status
-        wifi_status = self.coordinator.data.get("wifi_status_detail", {})
+        wifi_status = self.coordinator.data.get("wifi_status_detail") or {}
         device_status = None
         for device in wifi_status.get("res", []):
             if device.get("name") == self.device_config.get("device"):

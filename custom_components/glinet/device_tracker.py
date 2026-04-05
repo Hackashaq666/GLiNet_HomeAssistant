@@ -45,7 +45,8 @@ async def async_setup_entry(
             mac_address = client_data["mac"].upper()
             if mac_address in tracked_devices:
                 tracked_devices[mac_address].client_data = client_data
-                tracked_devices[mac_address].async_write_ha_state()
+                if tracked_devices[mac_address].hass is not None:
+                    tracked_devices[mac_address].async_write_ha_state()
             else:
                 new_device = GlinetScannerEntity(coordinator, client_data)
                 tracked_devices[mac_address] = new_device
