@@ -207,7 +207,12 @@ class GLiNetAPI:
             if "result" in result:
                 return result["result"]
             else:
-                _LOGGER.error("No result in RPC response: %s", result)
+                error = result.get("error", {})
+                if error.get("code") == -32601:
+                    # Method not found — expected on hardware that lacks this feature (e.g. wired-only devices have no wifi RPC)
+                    _LOGGER.debug("RPC method not supported on this hardware: %s", result)
+                else:
+                    _LOGGER.error("No result in RPC response: %s", result)
                 return None
                 
         except Exception as exc:

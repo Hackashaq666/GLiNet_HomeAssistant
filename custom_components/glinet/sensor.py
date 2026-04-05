@@ -304,7 +304,7 @@ class GLiNetSensor(CoordinatorEntity, SensorEntity):
         zone_list = self.coordinator.data.get("zone_list", {})
         wg_server_status = self.coordinator.data.get("wg_server_status", {})
         ovpn_server_status = self.coordinator.data.get("ovpn_server_status", {})
-        wifi_status_detail = self.coordinator.data.get("wifi_status_detail", {})
+        wifi_status_detail = self.coordinator.data.get("wifi_status_detail") or {}
         
         key = self.entity_description.key
         
@@ -486,6 +486,8 @@ class GLiNetSensor(CoordinatorEntity, SensorEntity):
             return "Stopped"
         
         elif key == "wifi_devices_status":
+            if not wifi_status_detail:
+                return None
             devices = wifi_status_detail.get("res", [])
             ready_count = sum(1 for d in devices if d.get("state") == "ready")
             return f"{ready_count}/{len(devices)} Ready"
@@ -506,7 +508,7 @@ class GLiNetSensor(CoordinatorEntity, SensorEntity):
         wg_server_status = self.coordinator.data.get("wg_server_status", {})
         wg_server_config = self.coordinator.data.get("wg_server_config", {})
         ovpn_server_status = self.coordinator.data.get("ovpn_server_status", {})
-        wifi_status_detail = self.coordinator.data.get("wifi_status_detail", {})
+        wifi_status_detail = self.coordinator.data.get("wifi_status_detail") or {}
         
         key = self.entity_description.key
         
@@ -677,6 +679,8 @@ class GLiNetSensor(CoordinatorEntity, SensorEntity):
             }
         
         elif key == "wifi_devices_status":
+            if not wifi_status_detail:
+                return {}
             devices = wifi_status_detail.get("res", [])
             device_info = {}
             for device in devices:
