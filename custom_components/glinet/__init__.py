@@ -15,7 +15,8 @@ PLATFORMS = [Platform.SENSOR, Platform.SWITCH, Platform.BUTTON, Platform.DEVICE_
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up GL.iNet from a config entry."""
     coordinator = GLiNetDataUpdateCoordinator(hass, entry)
-    
+
+    await coordinator.async_detect_capabilities()
     await coordinator.async_config_entry_first_refresh()
     
     hass.data.setdefault(DOMAIN, {})
