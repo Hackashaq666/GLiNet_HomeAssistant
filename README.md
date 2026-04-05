@@ -30,14 +30,14 @@ Other GL.iNet router models with 4.x firmware should also work, but may require 
 2. Go to "Integrations"
 3. Click the three dots in the top right corner
 4. Select "Custom repositories"
-5. Add this repository URL: `https://github.com/angolo40/GLiNet_HomeAssistant`
+5. Add this repository URL: `https://github.com/Hackashaq666/GLiNet_HomeAssistant`
 6. Select "Integration" as the category
 7. Click "Add"
 8. Search for "GLiNet" and install
 
 ### Manual Installation
 
-1. Download the latest release from the [releases page](https://github.com/angolo40/GLiNet_HomeAssistant/releases)
+1. Download the latest release from the [releases page](https://github.com/Hackashaq666/GLiNet_HomeAssistant/releases)
 2. Extract the `custom_components/glinet` folder to your Home Assistant `custom_components` directory
 3. Restart Home Assistant
 
@@ -68,8 +68,8 @@ Contributions are welcome! Please feel free to submit a Pull Request. For major 
 
 **Giuseppe Trifilio**
 
-- GitHub: [@angolo40](https://github.com/angolo40)
-- Project Link: [https://github.com/angolo40/GLiNet_HomeAssistant](https://github.com/angolo40/GLiNet_HomeAssistant)
+- GitHub: [@angolo40](https://github.com/Hackashaq666)
+- Project Link: [https://github.com/angolo40/GLiNet_HomeAssistant](https://github.com/Hackashaq666/GLiNet_HomeAssistant)
 
 ## 📄 License
 
@@ -79,7 +79,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 If this integration helped you, please consider giving it a ⭐️ on GitHub!
 
-For support, please open an issue on the [GitHub repository](https://github.com/angolo40/GLiNet_HomeAssistant/issues).
+For support, please open an issue on the [GitHub repository](https://github.com/Hackashaq666/GLiNet_HomeAssistant/issues).
 
 ---
 
