@@ -69,7 +69,6 @@ class GLiNetDataUpdateCoordinator(DataUpdateCoordinator):
                 self.hass.async_add_executor_job(self.api.get_wg_server_status),
                 self.hass.async_add_executor_job(self.api.get_wg_server_config),
                 self.hass.async_add_executor_job(self.api.get_ovpn_server_status),
-                self.hass.async_add_executor_job(self.api.get_clients),
             )
             (
                 vpn_status,
@@ -88,7 +87,6 @@ class GLiNetDataUpdateCoordinator(DataUpdateCoordinator):
                 wg_server_status,
                 wg_server_config,
                 ovpn_server_status,
-                clients,
             ) = core_results
 
             # --- WiFi calls (skipped entirely on wired-only hardware) ---
@@ -120,7 +118,6 @@ class GLiNetDataUpdateCoordinator(DataUpdateCoordinator):
                 "ovpn_server_status": ovpn_server_status,
                 "wifi_config": wifi_config,
                 "wifi_status_detail": wifi_status_detail,
-                "clients": clients,
             }
 
         except Exception as exc:
