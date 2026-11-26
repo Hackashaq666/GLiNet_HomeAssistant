@@ -18,7 +18,7 @@ A custom Home Assistant integration for managing GL.iNet routers, providing comp
 This integration is designed for GL.iNet routers running firmware 4.x. It has been tested on:
 
 - **Model**: GL-MT300N-V2
-- **Firmware**: 4.3.11
+- **Firmware**: 4.7.15
 
 Other GL.iNet router models with 4.x firmware should also work, but may require testing.
 
