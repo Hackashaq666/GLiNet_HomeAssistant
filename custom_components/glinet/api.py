@@ -3,6 +3,7 @@ import hashlib
 import json
 import logging
 import subprocess
+import threading
 from typing import Any, Dict, List, Optional
 
 import requests
@@ -21,6 +22,7 @@ class GLiNetAPI:
         self.sid: Optional[str] = None
         self.session = requests.Session()
         self.session.timeout = 10
+        self._auth_lock = threading.Lock()
 
     def authenticate(self) -> bool:
         """Authenticate with the router."""
@@ -49,7 +51,9 @@ class GLiNetAPI:
             alg = result.get("alg")
             salt = result.get("salt")
             nonce = result.get("nonce")
-            
+            # Firmware 4.7.x adds "hash-method" (e.g. sha256); older firmware omits it (md5)
+            hash_method = result.get("hash-method", "md5")
+
             if not all([alg, salt, nonce]):
                 _LOGGER.error("Missing challenge parameters")
                 return False
@@ -59,7 +63,11 @@ class GLiNetAPI:
             
             # Create hash
             hash_string = f"{self.username}:{cipher_password}:{nonce}"
-            hash_value = hashlib.md5(hash_string.encode()).hexdigest()
+            try:
+                hash_value = hashlib.new(hash_method, hash_string.encode()).hexdigest()
+            except ValueError:
+                _LOGGER.error("Unsupported hash-method from router: %s", hash_method)
+                return False
             
             # Login
             login_data = {
@@ -182,9 +190,12 @@ class GLiNetAPI:
     def _make_rpc_call(self, service: str, method: str, params: Optional[Dict] = None) -> Optional[Dict]:
         """Make an RPC call to the router."""
         if not self.sid:
-            if not self.authenticate():
-                return None
-                
+            # Serialize login so parallel pollers don't each attempt it
+            # (repeated failures trigger the router's login lockout)
+            with self._auth_lock:
+                if not self.sid and not self.authenticate():
+                    return None
+
         if params is None:
             params = {}
             
